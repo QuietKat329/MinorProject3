@@ -1,0 +1,112 @@
+﻿@page
+@model MinorProject3.Web.Pages.AdminSettingsModel
+@{
+    ViewData["Title"] = "Admin Settings";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Restricted Admin Settings</h2>
+        <span>Security Level: High</span>
+    </div>
+
+    @if (!Model.IsAuthorized)
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Restricted Access Required</h5>
+            </div>
+            <div class="card-body">
+                <p>You must enter the correct administrator access code to view game configurations.</p>
+                <form method="get" class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="AdminCode" class="form-label">Administrator Passcode</label>
+                        <input asp-for="AdminCode" type="password" class="form-control" placeholder="Enter code..." required />
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-dark w-100">Unlock Panel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary" role="alert">
+            Access Granted! Managing game configuration parameters.
+        </div>
+
+        <div class="card mb-5">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Configuration Key-Values</h5>
+                <a asp-page="./AdminSettings" class="btn btn-sm btn-outline-light">Lock Panel</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Setting Key</th>
+                                <th>Setting Value</th>
+                                <th>Last Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Settings.Any())
+                            {
+                                @foreach (var setting in Model.Settings)
+                                {
+                                    <tr>
+                                        <td>@setting.Id</td>
+                                        <td><code>@setting.SettingKey</code></td>
+                                        <td>@setting.SettingValue</td>
+                                        <td>@setting.LastUpdated.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                        <td>
+                                            <a asp-page="/EditAdminSetting" asp-route-id="@setting.Id" asp-route-adminCode="@Model.AdminCode" class="btn btn-sm btn-outline-dark me-1">Edit</a>
+                                            <form method="post" asp-page-handler="Delete" asp-route-id="@setting.Id" onsubmit="return confirm('Are you sure you want to delete this setting?');" class="d-inline">
+                                                <input type="hidden" name="AdminCode" value="@Model.AdminCode" />
+                                                <button type="submit" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">No configuration settings found.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Add New Configuration Setting</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="Add">
+                    <input type="hidden" name="AdminCode" value="@Model.AdminCode" />
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <label asp-for="NewSetting.SettingKey" class="form-label">Setting Key</label>
+                            <input asp-for="NewSetting.SettingKey" class="form-control" placeholder="e.g. MaxPartySize" required />
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="NewSetting.SettingValue" class="form-label">Setting Value</label>
+                            <input asp-for="NewSetting.SettingValue" class="form-control" placeholder="e.g. 4" required />
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-dark w-100">Save Setting</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+</div>

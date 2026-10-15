@@ -1,31 +1,79 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
+
+
+
+
+html.theme-dark-fantasy,
+html.theme-dark-fantasy body {
+    background-color: #121214 !important;
+    color: #e2e8f0 !important;
+}
+
+
+html.theme-blood-moon,
+html.theme-blood-moon body {
+    background-color: #1a0f0f !important;
+    color: #f7dcde !important;
+}
+
+    html.theme-blood-moon .navbar {
+        background-color: #4a1515 !important;
+    }
+
+
+html.theme-arcane-midnight,
+html.theme-arcane-midnight body {
+    background-color: #0f111a !important;
+    color: #e0e7ff !important;
+}
+
+    html.theme-arcane-midnight .navbar {
+        background-color: #1e1b4b !important;
+    }
+
+
+html.theme-light-parchment,
+html.theme-light-parchment body {
+    background-color: #fcf8f2 !important;
+    color: #2c221e !important;
+}
+
+    html.theme-light-parchment .card {
+        background-color: #fffdf9 !important;
+        color: #2c221e !important;
+        border-color: #d4c5b9 !important;
+    }
+
+    html.theme-light-parchment .navbar {
+        background-color: #4a3b32 !important;
+    }

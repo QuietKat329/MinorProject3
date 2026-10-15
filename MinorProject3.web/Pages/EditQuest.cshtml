@@ -1,0 +1,54 @@
+﻿@page "{id:int}"
+@model MinorProject3.Web.Pages.EditQuestModel
+@{
+    ViewData["Title"] = "Edit Quest";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Edit Quest</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Quest.Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="Quest.Title" class="form-label">Quest Title</label>
+                            <input asp-for="Quest.Title" class="form-control" required />
+                            <span asp-validation-for="Quest.Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Quest.Difficulty" class="form-label">Difficulty</label>
+                            <select asp-for="Quest.Difficulty" class="form-select" required>
+                                <option value="Easy">Easy</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                                <option value="Legendary">Legendary</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Quest.RewardXp" class="form-label">Reward XP / Gold</label>
+                            <input asp-for="Quest.RewardXp" type="number" class="form-control" required />
+                            <span asp-validation-for="Quest.RewardXp" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input asp-for="Quest.IsCompleted" class="form-check-input" type="checkbox" id="editCompletedCheck" />
+                            <label class="form-check-label" for="editCompletedCheck">Completed</label>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="/Index" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-dark px-4">Update Quest</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

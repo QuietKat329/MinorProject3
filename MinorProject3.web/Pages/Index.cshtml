@@ -1,10 +1,120 @@
 ﻿@page
-@model IndexModel
+@model MinorProject3.Web.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Quest Log";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-body bg-dark text-white p-3">
+            <div>
+                <h4 class="mb-1">Guild Adventurer Profile</h4>
+                <div>Rank: Guild Adventurer | Level @Model.PlayerLevel</div>
+                <div>Gold: @Model.PlayerGold | XP: @Model.PlayerXp</div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Quest Board</h2>
+        <span>Total Quests: @Model.Quests.Count</span>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table mb-0 align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Quest Title</th>
+                            <th>Difficulty</th>
+                            <th>Reward</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var quest in Model.Quests)
+                        {
+                            <tr>
+                                <td>@quest.Id</td>
+                                <td>@quest.Title</td>
+                                <td>@quest.Difficulty</td>
+                                <td>@quest.RewardXp Gold / @quest.RewardXp XP</td>
+                                <td>
+                                    @if (quest.IsCompleted)
+                                    {
+                                        <span>Completed</span>
+                                    }
+                                    else
+                                    {
+                                        <span>In Progress</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!quest.IsCompleted)
+                                    {
+                                        <form method="post" asp-page-handler="CompleteQuest" asp-route-id="@quest.Id" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-dark me-1">Claim Reward</button>
+                                        </form>
+                                    }
+                                    <a asp-page="/EditQuest" asp-route-id="@quest.Id" class="btn btn-sm btn-outline-dark me-1">Edit</a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@quest.Id" onsubmit="return confirm('Are you sure you want to abandon this quest?');" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Post New Quest</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <label asp-for="NewQuest.Title" class="form-label">Quest Title</label>
+                        <input asp-for="NewQuest.Title" class="form-control" placeholder="e.g. Slay the Shadow Beast" required />
+                    </div>
+                    <div class="col-md-3">
+                        <label asp-for="NewQuest.Difficulty" class="form-label">Difficulty</label>
+                        <select asp-for="NewQuest.Difficulty" class="form-select" required>
+                            <option value="Easy">Easy</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="Hard">Hard</option>
+                            <option value="Legendary">Legendary</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label asp-for="NewQuest.RewardXp" class="form-label">Reward XP/Gold</label>
+                        <input asp-for="NewQuest.RewardXp" type="number" class="form-control" value="250" required />
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <div class="form-check mb-2">
+                            <input asp-for="NewQuest.IsCompleted" class="form-check-input" type="checkbox" id="isCompletedCheck" />
+                            <label class="form-check-label" for="isCompletedCheck">Completed</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 text-end">
+                    <button type="submit" class="btn btn-dark px-4">Post Quest</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

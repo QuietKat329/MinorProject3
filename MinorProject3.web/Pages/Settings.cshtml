@@ -1,0 +1,71 @@
+﻿@page
+@model MinorProject3.web.Pages.SettingsModel
+@{
+    ViewData["Title"] = "Guild Preferences";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Guild Preferences & Settings</h2>
+        <span>User Customization</span>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Appearance & Language Preferences</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="SelectedTheme" class="form-label">Guild Theme</label>
+                        <select asp-for="SelectedTheme" class="form-select">
+                            <option value="dark-fantasy">Dark Fantasy (Charcoal & Gold)</option>
+                            <option value="blood-moon">Blood Moon (Crimson Accents)</option>
+                            <option value="arcane-midnight">Arcane Midnight (Deep Sapphire & Purple)</option>
+                            <option value="light-parchment">Light Parchment (Classic Scroll)</option>
+                        </select>
+                        <div class="form-text">Choose the primary aesthetic for your guild interface.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="SelectedLanguage" class="form-label">Guild Language</label>
+                        <select asp-for="SelectedLanguage" class="form-select">
+                            <option value="en">English (Common)</option>
+                            <option value="fr">Français (Kalderan)</option>
+                            <option value="elvish">Elvish (Sindarin)</option>
+                            <option value="dwarvish">Dwarvish (Khuzdul)</option>
+                        </select>
+                        <div class="form-text">Select your preferred language or local dialect.</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 text-end">
+                    <button type="submit" class="btn btn-dark px-4">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Restricted Administrator Panel</h5>
+            <span>Restricted</span>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                Access game configurations, manage custom key-value settings, and modify system parameters.
+            </p>
+            <a asp-page="/AdminSettings" class="btn btn-outline-dark">
+                Access Admin Settings
+            </a>
+        </div>
+    </div>
+</div>

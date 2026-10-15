@@ -1,0 +1,76 @@
+﻿@page
+@model MinorProject3.web.Pages.ShopModel
+@{
+    ViewData["Title"] = "Guild Shop";
+}
+
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-body bg-dark text-white p-3">
+            <div class="d-flex flex-wrap align-items-center justify-content-between">
+                <div>
+                    <h4 class="mb-1">Guild Merchant's Shop</h4>
+                    <div>Exchange your quest rewards for weapons, armor, and supplies</div>
+                </div>
+                <div class="mt-2 mt-md-0">
+                    <div>Your Gold Pouch: @Model.PlayerGold Gold</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+        @foreach (var item in Model.ShopItems)
+        {
+            bool canAfford = Model.PlayerGold >= item.PriceGold;
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">@item.ItemName</span>
+                        <span>@item.ItemType</span>
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Price:</span>
+                                <strong>@item.PriceGold Gold</strong>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>In Stock:</span>
+                                <span>@item.StockQuantity left</span>
+                            </div>
+                        </div>
+                        <form method="post" asp-page-handler="Buy" asp-route-id="@item.Id">
+                            <button type="submit" class="btn w-100 @(canAfford ? "btn-outline-dark" : "btn-outline-secondary disabled")">
+                                @if (canAfford)
+                                {
+                                    <span>Purchase Item</span>
+                                }
+                                else
+                                {
+                                    <span>Not Enough Gold</span>
+                                }
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
